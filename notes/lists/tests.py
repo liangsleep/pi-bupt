@@ -7,11 +7,14 @@ from lists.models import Item
 
 class HomePageTest(TestCase):
 
-    def test_displays_all_list_items(self):
-        Item.objects.create(text='itemey 1')
-        Item.objects.create(text='itemey 2')
+    def test_uses_home_template(self):
         response = self.client.get('/')
-        self.assertIn('itemey 1', response.content.decode())
-        self.assertIn('itemey 2', response.content.decode())
+        self.assertTemplateUsed(response,'home.html')
+
+class ListViewTest(TestCase):
+
+    def test_uses_list_template(self):
+        response = self.client.get('/lists/the-new-page/')
+        self.assertTemplateUsed(response, 'list.html')
 
     
