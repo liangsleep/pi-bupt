@@ -48,7 +48,6 @@ class NewVisitorTest(LiveServerTestCase):
         inputbox.send_keys('Give a gift to Lisi')
         inputbox.send_keys(Keys.ENTER)
 
-
         self.wait_for_row_in_list_table('1: Buy flowers')
         self.wait_for_row_in_list_table('2: Give a gift to Lisi')
         
@@ -93,7 +92,7 @@ class NewVisitorTest(LiveServerTestCase):
         self.assertNotIn('Buy flowers', page_text)
         self.assertIn('Buy milk', page_text)
 
-        self.fail('Finish the test!')
+       
 
 
 
