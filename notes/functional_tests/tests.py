@@ -1,17 +1,20 @@
 from selenium import webdriver
 from selenium.webdriver.common.keys import Keys
-import time 
+import time
 from selenium.webdriver.common.by import By
-from django.test import LiveServerTestCase
+from django.contrib.staticfiles.testing import StaticLiveServerTestCase
+from selenium.common.exceptions import WebDriverException
 
-class NewVisitorTest(LiveServerTestCase):
+MAX_WAIT=10
+
+class NewVisitorTest(StaticLiveServerTestCase):
 
     def setUp(self):
         self.browser = webdriver.Chrome()
-    
+
     def tearDown(self):
         self.browser.quit()
-   
+
     def wait_for_row_in_list_table(self, row_text):
         start_time = time.time()
         while True:
@@ -20,7 +23,7 @@ class NewVisitorTest(LiveServerTestCase):
                 rows = table.find_elements(By.TAG_NAME,'tr')
                 self.assertIn(row_text, [row.text for row in rows])
                 return
-            except (AssertionError, webdriverException) as e:
+            except (AssertionError, WebDriverException) as e:
                 if time.time() - start_time > MAX_WAIT:
                     raise e
                 time.sleep(0.5)
@@ -41,7 +44,6 @@ class NewVisitorTest(LiveServerTestCase):
         inputbox.send_keys('Buy flowers')
 
         inputbox.send_keys(Keys.ENTER)
-    
         self.wait_for_row_in_list_table('1: Buy flowers')
         
         inputbox = self.browser.find_element(By.ID,'id_new_item')
